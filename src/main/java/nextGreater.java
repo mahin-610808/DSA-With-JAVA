@@ -10,7 +10,7 @@ public class nextGreater {
 
             int pos = -1;
 
-            // Step 1: nums2 তে nums1[i] এর position খোঁজো
+
             for (int j = 0; j < nums2.length; j++) {
                 if (nums2[j] == nums1[i]) {
                     pos = j;
@@ -18,7 +18,7 @@ public class nextGreater {
                 }
             }
 
-            // Step 2: সেই position এর ডান থেকে বড় সংখ্যা খোঁজো
+
             ans[i] = -1; // default -1
             for (int k = pos + 1; k < nums2.length; k++) {
                 if (nums2[k] > nums1[i]) {

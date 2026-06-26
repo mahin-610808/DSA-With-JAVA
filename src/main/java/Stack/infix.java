@@ -1,65 +1,61 @@
 package Stack;
 
-import java.util.*;
 import java.util.Stack;
 
 public class infix {
+
+    static int prec(char c) {
+        if (c == '+' || c == '-') return 1;
+        if (c == '*' || c == '/') return 2;
+        return 0;
+    }
+
+    static void applyOp(Stack<Integer> val, Stack<Character> op) {
+        int v2 = val.pop();
+        int v1 = val.pop();
+        char oper = op.pop();
+        switch (oper) {
+            case '+': val.push(v1 + v2); break;
+            case '-': val.push(v1 - v2); break;
+            case '*': val.push(v1 * v2); break;
+            case '/': val.push(v1 / v2); break;
+        }
+    }
+
     public static void main(String[] args) {
-        String str="9-(5+3)*4/6";
-        Stack<Integer> val =new Stack<>();
-        Stack<Character> op=new Stack<>();
-        for(int i=0;i<str.length();i++){
-            char ch=str.charAt(i);
-            int ascii=(int)ch;
-            if(ascii>=48 && ascii<=57)val.push(ascii-48);
-            else if(op.size()==0 ||ch=='('||op.peek()=='(') op.push(ch);
-            else if(ch==')'){
-                while(op.peek()!='('){
-                    int v2=val.pop();
-                    int v1=val.pop();
-                    if(op.peek()=='-') val.push(v1-v2);
-                    if(op.peek()=='+') val.push(v1+v2);
-                    if(op.peek()=='*') val.push(v1*v2);
-                    if(op.peek()=='/') val.push(v1/v2);
-                    op.pop();
+        String str = "9-(5+3)*4/6";
+        Stack<Integer> val = new Stack<>();
+        Stack<Character> op = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+
+            if (ch >= '0' && ch <= '9') {
+                val.push(ch - '0');
+
+            } else if (ch == '(') {
+                op.push(ch);
+
+            } else if (ch == ')') {
+                while (op.peek() != '(') {
+                    applyOp(val, op);
                 }
-                op.pop();
-            }
-             else{
-                 if(ch=='+'|| ch=='-'){
-                     int v2=val.pop();
-                     int v1=val.pop();
-                     if(op.peek()=='-') val.push(v1-v2);
-                     if(op.peek()=='+') val.push(v1+v2);
-                     if(op.peek()=='*') val.push(v1*v2);
-                     if(op.peek()=='/') val.push(v1/v2);
-                     op.pop();
-                     op.push(ch);
-                 }
-                 if(ch=='*'||ch=='/'){
-                     if(op.peek()=='*'||op.peek()=='/'){
-                         int v2=val.pop();
-                         int v1=val.pop();
-                         if(op.peek()=='*') val.push(v1*v2);
-                         if(op.peek()=='/') val.push(v1/v2);
-                         op.pop();
-                         op.push(ch);
-                     }
-                     else op.push(ch);
-                 }
-            }
+                op.pop(); // '(' remove koro
 
+            } else { // +, -, *, /
+                // op stack-e jetar priority beshi ba soman, age calculate koro
+                while (!op.isEmpty() && op.peek() != '('
+                        && prec(op.peek()) >= prec(ch)) {
+                    applyOp(val, op);
+                }
+                op.push(ch);
+            }
         }
-        while(val.size()>1){
-            int v2=val.pop();
-            int v1=val.pop();
-            if(op.peek()=='-') val.push(v1-v2);
-            if(op.peek()=='+') val.push(v1+v2);
-            if(op.peek()=='*') val.push(v1*v2);
-            if(op.peek()=='/') val.push(v1/v2);
-            op.pop();
-        }
-        System.out.println(val.peek());
 
+        while (!op.isEmpty()) {
+            applyOp(val, op);
+        }
+
+        System.out.println(val.peek()); // Output: 7
     }
 }

@@ -6,13 +6,14 @@ public class prefix {
 
     public static void main(String[] args) {
 
-        String str = "+5*32";  // Infix: 5 + 3*2 = 11
+        String str = "+5*(32)";  // Infix: 5 + 3*2 = 11
 
         Stack<Integer> val = new Stack<>();
 
         // Dan theke bame poro
         for (int i = str.length() - 1; i >= 0; i--) {
             char ch = str.charAt(i);
+            if (ch == '(' || ch == ')') continue;
 
             // Sonkha hole push koro
             if (ch >= '0' && ch <= '9') {

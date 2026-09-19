@@ -1,9 +1,9 @@
 package BasicProblem;
 
 import java.util.HashSet;
-// just logic for leetcode
+
 public class containingDuplicate219 {
-    public static void main(String[] args) {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
         HashSet<Integer> window = new HashSet<>();
 
         for (int i = 0; i < nums.length; i++) {
@@ -19,5 +19,13 @@ public class containingDuplicate219 {
         }
 
         return false;
+    }
+
+    public static void main(String[] args) {
+        containingDuplicate219  sol = new containingDuplicate219 ();
+
+        System.out.println(sol.containsNearbyDuplicate(new int[]{1,2,3,1}, 3));      // true
+        System.out.println(sol.containsNearbyDuplicate(new int[]{1,0,1,1}, 1));      // true
+        System.out.println(sol.containsNearbyDuplicate(new int[]{1,2,3,1,2,3}, 2));  // false
     }
 }
